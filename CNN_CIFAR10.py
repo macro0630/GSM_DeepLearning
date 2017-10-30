@@ -21,8 +21,10 @@ from keras.utils import np_utils
 from keras.layers.normalization import BatchNormalization
 import matplotlib.pyplot as plt
 
+# fix dimension ordering issue
 from keras import backend as K
 K.set_image_dim_ordering('th')
+
 
 
 seed = 50
@@ -51,25 +53,21 @@ def create_model():
     model = Sequential()
     model.add(Conv2D(32, (3, 3), input_shape=(3, 32, 32), padding='same', activation='relu'))
     model.add(Dropout(0.2))
-    
-    model.add(Conv2D(64, (3, 3)))
-    model.add(BatchNormalization(axis=1))
-    model.add(Activation('relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(Dropout(0.2))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.2))
-    
-    model.add(Conv2D(64, (3, 3)))
-    model.add(BatchNormalization(axis=1))
-    model.add(Activation('relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.2))
 
     model.add(Flatten())
-    model.add(Dense(512, kernel_initializer='uniform'))
+    model.add(Dense(1024, kernel_initializer='uniform'))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(256, kernel_initializer='uniform'))
+    model.add(Dense(512, kernel_initializer='uniform'))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.2))
@@ -83,7 +81,7 @@ def create_model():
 model = create_model()
 
 # fit the model
-history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=15, batch_size=32)
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=24)
 scores = model.evaluate(X_test, y_test, verbose=0)
 
 acc = scores[1] * 100

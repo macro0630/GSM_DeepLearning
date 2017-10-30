@@ -33,7 +33,7 @@ dataframe = pd.read_csv("./fashion-mnist_test.csv")
 dataset_test = dataframe.values
 
 X_train = np.array(dataset_train[:,1:].astype('float32'))
-X_train = X_train / 255
+X_train = X_train / 255.0
 
 y_train = np.array(dataset_train[:,0])
 # 멀티 클래스로 분류되니까, 원 핫 인코딩 한다.
@@ -41,7 +41,7 @@ y_train = np_utils.to_categorical(y_train)
 
 
 X_test = np.array(dataset_test[:,1:].astype('float32'))
-X_test = X_test / 255
+X_test = X_test / 255.0
 
 y_test = np.array(dataset_test[:,0])
 # 멀티 클래스로 분류되니까, 원 핫 인코딩 한다.
